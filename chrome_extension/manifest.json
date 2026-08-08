@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Vigil AI Dark Pattern Radar",
   "version": "1.1",
-  "description": "Enterprise-grade dark pattern detection directly in your browser with real-time in-page visual highlights.",
+  "description": "Vigil AI v1.1 — Real-time in-page dark pattern detection. Highlights deceptive UI elements directly on web pages with severity-coded glowing badges and interactive legal violation tooltips.",
   "permissions": [
     "activeTab",
     "scripting"
