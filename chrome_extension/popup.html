@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <style>
+    :root {
+      --bg: #09090b; /* Zinc 950 */
+      --surface: #18181b; /* Zinc 900 */
+      --surface-hover: #27272a; /* Zinc 800 */
+      --border: #27272a;
+      --primary: #38bdf8; /* Sky 400 */
+      --primary-glow: rgba(56, 189, 248, 0.3);
+      --text-main: #f4f4f5; /* Zinc 50 */
+      --text-muted: #a1a1aa; /* Zinc 400 */
+      
+      --critical: #ef4444;
+      --high: #f97316;
+      --medium: #eab308;
+      --safe: #10b981;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      width: 340px;
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg);
+      color: var(--text-main);
+      overflow-x: hidden;
+    }
+
+    .container { padding: 20px; }
+
+    header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .logo-container {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 15px var(--primary-glow);
+    }
+
+    .logo-container svg { width: 18px; height: 18px; fill: white; }
+
+    h1 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0;
+      letter-spacing: -0.02em;
+    }
+
+    .url-pill {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      padding: 6px 12px;
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 24px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .url-icon { color: var(--primary); font-weight: bold; }
+
+    /* Buttons */
+    button {
+      width: 100%;
+      background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 15px var(--primary-glow);
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px var(--primary-glow);
+      filter: brightness(1.1);
+    }
+
+    button:disabled {
+      background: var(--surface-hover);
+      color: var(--text-muted);
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+
+    /* Views */
+    #loading-view, #results-view { display: none; }
+
+    /* Loading Spinner */
+    .loader-container {
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .radar-pulse {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: rgba(56, 189, 248, 0.1);
+      border: 2px solid var(--primary);
+      margin: 0 auto 16px;
+      position: relative;
+      animation: pulse 2s infinite;
+    }
+
+    .radar-pulse::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 50%; height: 2px;
+      background: var(--primary);
+      transform-origin: 0 50%;
+      animation: scan 1.5s linear infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 var(--primary-glow); }
+      70% { box-shadow: 0 0 0 20px rgba(56, 189, 248, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); }
+    }
+
+    @keyframes scan {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loader-text {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Results */
+    .score-hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .score-circle-wrapper {
+      position: relative;
+      width: 70px;
+      height: 70px;
+    }
+
+    svg.progress-ring { width: 70px; height: 70px; transform: rotate(-90deg); }
+    .progress-ring__circle {
+      fill: transparent;
+      stroke-width: 6;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 1s ease-in-out;
+    }
+    .progress-ring__bg {
+      fill: transparent;
+      stroke: var(--surface-hover);
+      stroke-width: 6;
+    }
+
+    .score-value {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .score-details {
+      flex: 1;
+      margin-left: 15px;
+    }
+
+    .risk-badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      background: rgba(255,255,255,0.1);
+    }
+
+    .grade-text {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .stat-val { font-size: 18px; font-weight: 700; margin-bottom: 2px; }
+    .stat-label { font-size: 11px; color: var(--text-muted); }
+
+    .top-findings { margin-bottom: 20px; }
+    .top-findings h3 {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin: 0 0 10px 0;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .finding-tag {
+      display: inline-block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      margin: 0 6px 6px 0;
+    }
+
+    .footer-link {
+      display: block;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 12px;
+      text-decoration: none;
+      padding: 10px;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+
+    .footer-link:hover {
+      background: var(--surface);
+      color: var(--text-main);
+    }
+    
+    .error-msg {
+      color: var(--critical);
+      font-size: 13px;
+      padding: 10px;
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      border-radius: 8px;
+      margin-top: 15px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo-container">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h1>Vigil AI</h1>
+    </header>
+
+    <div class="url-pill">
+      <span class="url-icon">🌍</span>
+      <span id="url-text" style="overflow: hidden; text-overflow: ellipsis;">Loading...</span>
+    </div>
+
+    <!-- MAIN VIEW -->
+    <div id="main-view">
+      <button id="scan-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        Scan Current Page
+      </button>
+      <div id="error-box" class="error-msg"></div>
+    </div>
+
+    <!-- LOADING VIEW -->
+    <div id="loading-view">
+      <div class="loader-container">
+        <div class="radar-pulse"></div>
+        <div class="loader-text">Analyzing dark patterns...</div>
+      </div>
+    </div>
+
+    <!-- RESULTS VIEW -->
+    <div id="results-view">
+      <div class="score-hero">
+        <div class="score-circle-wrapper">
+          <svg class="progress-ring">
+            <circle class="progress-ring__bg" cx="35" cy="35" r="30"></circle>
+            <circle class="progress-ring__circle" id="score-ring" cx="35" cy="35" r="30"></circle>
+          </svg>
+          <div class="score-value" id="score-text">--</div>
+        </div>
+        <div class="score-details">
+          <div class="risk-badge" id="risk-badge">Unscanned</div>
+          <div class="grade-text">Grade <strong id="grade-text">--</strong></div>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-val" id="total-patterns" style="color: var(--text-main);">0</div>
+          <div class="stat-label">Patterns Found</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" id="high-risk-patterns" style="color: var(--critical);">0</div>
+          <div class="stat-label">High/Critical Risk</div>
+        </div>
+      </div>
+
+      <div class="top-findings" id="findings-container">
+        <h3>Top Findings</h3>
+        <div id="findings-list">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <div id="highlight-controls" style="margin-bottom: 14px;">
+        <button id="toggle-highlight-btn" style="background: var(--surface); border: 1px solid var(--border); color: var(--text-main); box-shadow: none;">
+          <span style="font-size: 14px;">🎯</span> Toggle Highlights On Page
+        </button>
+      </div>
+
+      <a href="http://localhost:5000" target="_blank" class="footer-link">
+        Open Full Dashboard &rarr;
+      </a>
+    </div>
+
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

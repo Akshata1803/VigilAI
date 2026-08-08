@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='5' y1='3' x2='27' y2='30' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%236366f1'/%3E%3Cstop offset='1' stop-color='%234f46e5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M16 3L5 9V17.5C5 23.3 9.8 28.6 16 30C22.2 28.6 27 23.3 27 17.5V9L16 3Z' fill='url(%23g)'/%3E%3Cellipse cx='16' cy='17' rx='5' ry='3.5' stroke='white' stroke-width='1.8' fill='none'/%3E%3Ccircle cx='16' cy='17' r='1.8' fill='white'/%3E%3C/svg%3E" />
+  <meta name="description"
+    content="Vigil — AI-powered dark pattern detection. Expose manipulative website design instantly with legal intelligence." />
+  <title>Vigil — Dark Pattern Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/static/css/styles.css" />
+</head>
+
+<body>
+
+  <!-- ===================== NAVBAR ===================== -->
+  <nav class="navbar" id="navbar">
+    <div class="container nav-inner">
+      <a class="nav-brand" href="#" data-nav="hero">
+        <div class="brand-mark">
+          <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+            <path d="M16 3L5 9V17.5C5 23.3 9.8 28.6 16 30C22.2 28.6 27 23.3 27 17.5V9L16 3Z" fill="url(#vg)" />
+            <ellipse cx="16" cy="17" rx="5" ry="3.5" stroke="white" stroke-width="1.8" fill="none" />
+            <circle cx="16" cy="17" r="1.8" fill="white" />
+            <defs>
+              <linearGradient id="vg" x1="5" y1="3" x2="27" y2="30" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#6366f1" />
+                <stop offset="1" stop-color="#4f46e5" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <span class="brand-text">vigil<span class="brand-dot">.</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#" data-nav="history" class="nav-link">History</a></li>
+        <li><a href="#" data-nav="about" class="nav-link">How it works</a></li>
+        <li><button class="nav-cta" onclick="document.getElementById('url-input').focus();showView('hero')">Start
+            scanning</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ===================== HERO ===================== -->
+  <section id="hero" class="active">
+    <div class="container hero-wrap">
+
+      <div class="hero-eyebrow">
+        <span class="eyebrow-pip"></span>
+        9 Analysis Engines &nbsp;·&nbsp; 300+ Detection Rules &nbsp;·&nbsp; 14 Legal Frameworks
+      </div>
+
+      <h1 class="hero-h1">
+        Always watching.<br />
+        <em>Always honest.</em>
+      </h1>
+
+      <p class="hero-p">
+        Vigil runs <strong>DOM analysis</strong>, <strong>NLP manipulation detection</strong>,
+        <strong>GDPR consent auditing</strong>, <strong>readability scoring</strong>, and a
+        <strong>behavioural compound pattern engine</strong> on any website — mapping every
+        finding to a specific legal article.
+      </p>
+
+      <!-- Scan Card -->
+      <div class="scan-card">
+        <p class="sc-label">Enter a URL to analyse</p>
+        <div class="sc-row">
+          <div class="sc-field">
+            <svg class="sc-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2">
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.35-4.35" />
+            </svg>
+            <input id="url-input" type="url" class="sc-input" placeholder="https://example.com" autocomplete="off"
+              spellcheck="false" />
+          </div>
+          <button class="sc-btn" id="scan-btn" onclick="startScan()">
+            Analyse
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M5 12h14m-7-7 7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+        <div class="sc-chips">
+          Try:
+          <button class="sc-chip" onclick="setExample('https://booking.com')">booking.com</button>
+          <button class="sc-chip" onclick="setExample('https://amazon.in')">amazon.in</button>
+          <button class="sc-chip" onclick="setExample('https://linkedin.com')">linkedin.com</button>
+          <button class="sc-chip" onclick="setExample('https://spotify.com')">spotify.com</button>
+        </div>
+      </div>
+
+      <!-- Metrics row -->
+      <div class="hero-metrics">
+        <div class="hm-item"><strong class="hm-val anim-counter" id="hs-scans" data-target="0">0</strong><span class="hm-lbl">Scans this
+            session</span></div>
+        <div class="hm-div"></div>
+        <div class="hm-item"><strong class="hm-val anim-counter" data-target="300" data-suffix="+">0</strong><span class="hm-lbl">Detection rules</span></div>
+        <div class="hm-div"></div>
+        <div class="hm-item"><strong class="hm-val anim-counter" data-target="9">0</strong><span class="hm-lbl">AI &amp; ML engines</span></div>
+        <div class="hm-div"></div>
+        <div class="hm-item"><strong class="hm-val anim-counter" data-target="14">0</strong><span class="hm-lbl">Legal frameworks</span></div>
+      </div>
+
+      <!-- Engine showcase -->
+      <div class="engine-showcase">
+        <div class="es-card">
+          <div class="es-icon" style="--c1:#6366f1;--c2:#8b5cf6">🧬</div>
+          <div class="es-label">DOM Analysis</div>
+          <div class="es-sub">20 structural detectors</div>
+        </div>
+        <div class="es-card">
+          <div class="es-icon" style="--c1:#0891b2;--c2:#6366f1">🧠</div>
+          <div class="es-label">NLP Engine</div>
+          <div class="es-sub">200+ language patterns</div>
+        </div>
+        <div class="es-card">
+          <div class="es-icon" style="--c1:#d97706;--c2:#dc2626">🍪</div>
+          <div class="es-label">Consent Audit</div>
+          <div class="es-sub">10 GDPR checks</div>
+        </div>
+        <div class="es-card">
+          <div class="es-icon" style="--c1:#0d9488;--c2:#0891b2">📖</div>
+          <div class="es-label">Readability</div>
+          <div class="es-sub">Flesch-Kincaid scoring</div>
+        </div>
+        <div class="es-card es-card-featured">
+          <div class="es-icon" style="--c1:#db2777;--c2:#7c3aed">🧩</div>
+          <div class="es-label">Behavioural AI</div>
+          <div class="es-sub">Unique to Vigil</div>
+          <span class="es-badge">Exclusive</span>
+        </div>
+        <div class="es-card">
+          <div class="es-icon" style="--c1:#2563eb;--c2:#4f46e5">🔗</div>
+          <div class="es-label">Journey Analysis</div>
+          <div class="es-sub">Click-path detection</div>
+        </div>
+      </div>
+
+      <!-- Tag strip -->
+      <div class="tag-strip">
+        <span class="tag t-indigo">GDPR Compliance</span>
+        <span class="tag t-teal">Session Replay Detection</span>
+        <span class="tag t-rose">COPPA Risk Flagging</span>
+        <span class="tag t-amber">Cialdini Scoring</span>
+        <span class="tag t-violet">Forced Arbitration Detection</span>
+        <span class="tag t-sky">Data Broker Mapping</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===================== SCAN OVERLAY ===================== -->
+  <div class="scan-overlay" id="scan-overlay">
+    <div class="scan-modal">
+      <div class="smo-header">
+        <div class="smo-spinner">
+          <svg viewBox="0 0 48 48" class="sp-ring">
+            <circle cx="24" cy="24" r="20" fill="none" stroke="#e2e8f0" stroke-width="3.5" />
+            <circle cx="24" cy="24" r="20" fill="none" stroke="url(#spg)" stroke-width="3.5" stroke-dasharray="40 86"
+              stroke-linecap="round" />
+            <defs>
+              <linearGradient id="spg" x1="0" y1="0" x2="1" y2="1">
+                <stop stop-color="#6366f1" />
+                <stop offset="1" stop-color="#06b6d4" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div>
+          <p class="smo-title">Analysing</p>
+          <p class="smo-url" id="scan-target-url">—</p>
+        </div>
+      </div>
+
+      <div class="smo-steps">
+        <div class="smo-step" id="step-0"><span class="sms-n">1</span>
+          <div class="sms-body">
+            <div class="sms-name">Fetching &amp; Parsing</div>
+            <div class="sms-sub">Loading HTML, DOM tree and all page resources</div>
+          </div><span class="sms-check"></span>
+        </div>
+        <div class="smo-step" id="step-1"><span class="sms-n">2</span>
+          <div class="sms-body">
+            <div class="sms-name">DOM Structural Analysis</div>
+            <div class="sms-sub">Forms, buttons, checkboxes, popups, timers</div>
+          </div><span class="sms-check"></span>
+        </div>
+        <div class="smo-step" id="step-2"><span class="sms-n">3</span>
+          <div class="sms-body">
+            <div class="sms-name">NLP Text Analysis</div>
+            <div class="sms-sub">200+ manipulation language patterns</div>
+          </div><span class="sms-check"></span>
+        </div>
+        <div class="smo-step" id="step-3"><span class="sms-n">4</span>
+          <div class="sms-body">
+            <div class="sms-name">Elite Privacy Scan</div>
+            <div class="sms-sub">Trackers, fingerprinting, session replay tools</div>
+          </div><span class="sms-check"></span>
+        </div>
+        <div class="smo-step" id="step-4"><span class="sms-n">5</span>
+          <div class="sms-body">
+            <div class="sms-name">Cookie &amp; Consent Audit</div>
+            <div class="sms-sub">GDPR consent flow, button hierarchy, cookie walls</div>
+          </div><span class="sms-check"></span>
+        </div>
+        <div class="smo-step" id="step-5"><span class="sms-n">6</span>
+          <div class="sms-body">
+            <div class="sms-name">Link &amp; Journey Analysis</div>
+            <div class="sms-sub">Cancel vs sign-up path depth, anchor mismatches</div>
+          </div><span class="sms-check"></span>
+        </div>
+        <div class="smo-step" id="step-6"><span class="sms-n">7</span>
+          <div class="sms-body">
+            <div class="sms-name">Readability Scoring</div>
+            <div class="sms-sub">Flesch-Kincaid grade, jargon density, typography</div>
+          </div><span class="sms-check"></span>
+        </div>
+        <div class="smo-step" id="step-7"><span class="sms-n">8</span>
+          <div class="sms-body">
+            <div class="sms-name">Behavioural Pattern Scoring</div>
+            <div class="sms-sub">Cialdini vectors, compound funnels, enforcement risk</div>
+          </div><span class="sms-check"></span>
+        </div>
+        <div class="smo-step" id="step-8"><span class="sms-n">9</span>
+          <div class="sms-body">
+            <div class="sms-name">🤖 ML Classifier</div>
+            <div class="sms-sub">Scikit-Learn model predicting dark pattern categories</div>
+          </div><span class="sms-check"></span>
+        </div>
+        <div class="smo-step" id="step-9"><span class="sms-n">10</span>
+          <div class="sms-body">
+            <div class="sms-name">Generating Legal Report</div>
+            <div class="sms-sub">Trust score, grade, compliance flags &amp; recommendations</div>
+          </div><span class="sms-check"></span>
+        </div>
+      </div>
+
+      <div class="smo-bar-wrap">
+        <div class="smo-bar">
+          <div class="smo-bar-fill" id="scan-progress-fill"></div>
+        </div>
+        <span class="smo-pct" id="sm-progress-label">0%</span>
+      </div>
+
+      <!-- Scan error state — shown if API returns an error during scanning -->
+      <div id="scan-error-state" style="display:none;margin-top:18px;padding:14px 18px;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.35);border-radius:10px;color:#fca5a5;font-size:13px;line-height:1.5;">
+        <div style="display:flex;align-items:flex-start;gap:10px;">
+          <span style="font-size:18px;flex-shrink:0;">⚠️</span>
+          <div style="flex:1;">
+            <strong style="color:#f87171;display:block;margin-bottom:4px;">Scan failed</strong>
+            <span id="scan-error-msg">An unexpected error occurred. Please check the URL and try again.</span>
+          </div>
+          <button onclick="hideScanError()" style="background:none;border:none;color:#f87171;cursor:pointer;font-size:18px;line-height:1;padding:0;flex-shrink:0;" title="Dismiss">&times;</button>
+        </div>
+      </div>
+
+      <!-- UX-1 FIX: Cancel button + elapsed timer for stuck scans -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:14px;">
+        <span id="scan-elapsed" style="font-size:12px;color:#94a3b8;font-family:'JetBrains Mono',monospace;"></span>
+        <button id="cancel-scan-btn" onclick="cancelScan()" style="display:none;padding:6px 16px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.4);border-radius:8px;color:#f87171;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;">Cancel Scan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== RESULTS ===================== -->
+  <section id="results">
+    <div class="container">
+
+      <!-- Top bar -->
+      <div class="res-topbar">
+        <button class="back-btn" onclick="showView('hero')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M19 12H5M5 12l7 7M5 12l7-7" />
+          </svg>
+          New scan
+        </button>
+        <div class="res-site-tag">
+          <span class="rst-dot"></span>
+          <span id="result-title">—</span>
+        </div>
+        <div class="res-actions">
+          <button class="icon-btn" id="export-json-btn" onclick="exportReport('json')" title="Export JSON">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            Export JSON
+          </button>
+          <button class="icon-btn" id="export-text-btn" onclick="exportReport('text')" title="Export Text">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+            </svg>
+            Export Report
+          </button>
+        </div>
+      </div>
+
+      <!-- Score + Summary Row -->
+      <div class="res-hero">
+        <div class="score-block">
+          <div class="gauge-wrap">
+            <svg class="gauge-svg" viewBox="0 0 180 180">
+              <circle class="g-track" cx="90" cy="90" r="74" />
+              <circle class="g-arc" id="gauge-fill" cx="90" cy="90" r="74" stroke-dasharray="465"
+                stroke-dashoffset="465" />
+            </svg>
+            <div class="gauge-center">
+              <span class="gc-num" id="gauge-score-value">—</span>
+              <span class="gc-of">/100</span>
+              <span class="gc-grade" id="gauge-grade">—</span>
+            </div>
+          </div>
+
+          <div class="score-meta-list">
+            <div class="sml-row"><span class="sml-k">Score</span><span class="sml-v" id="gauge-score-value2">—</span>
+            </div>
+            <div class="sml-row"><span class="sml-k">Risk</span>
+              <div class="risk-tag" id="risk-badge">—</div>
+            </div>
+            <div class="sml-row"><span class="sml-k">Grade</span><span class="grade-tag" id="grade-display">—</span>
+            </div>
+            <div class="sml-row"><span class="sml-k">Patterns</span><span class="sml-v" id="stat-total">0</span></div>
+            <div class="sml-row"><span class="sml-k">URL</span><a id="result-url" href="#" target="_blank"
+                class="sml-link">—</a></div>
+          </div>
+        </div>
+
+        <div class="summary-block">
+          <div class="sb-label">AI Summary</div>
+          <p id="result-summary" class="sb-text">—</p>
+
+          <div class="sev-strip">
+            <div class="sv-chip red"><span id="stat-high">0</span><span>High</span></div>
+            <div class="sv-chip amber"><span id="stat-medium">0</span><span>Medium</span></div>
+            <div class="sv-chip blue"><span id="stat-low">0</span><span>Low</span></div>
+            <div class="sv-chip violet"><span id="stat-elite">0</span><span>Elite</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8-Engine Breakdown -->
+      <div class="engines-row">
+        <div class="eng-card">
+          <div class="ec-top"><span>🧬</span><span class="ec-n">DOM</span><span class="ec-v"
+              id="analysis-dom-count">0</span></div>
+          <div class="ec-bar">
+            <div class="ec-fill" id="engine-dom-bar" style="--c:#6366f1"></div>
+          </div>
+        </div>
+        <div class="eng-card">
+          <div class="ec-top"><span>🧠</span><span class="ec-n">NLP</span><span class="ec-v"
+              id="analysis-text-count">0</span></div>
+          <div class="ec-bar">
+            <div class="ec-fill" id="engine-text-bar" style="--c:#0891b2"></div>
+          </div>
+        </div>
+        <div class="eng-card">
+          <div class="ec-top"><span>🎨</span><span class="ec-n">Visual</span><span class="ec-v"
+              id="analysis-visual-count">0</span></div>
+          <div class="ec-bar">
+            <div class="ec-fill" id="engine-visual-bar" style="--c:#f97316"></div>
+          </div>
+        </div>
+        <div class="eng-card">
+          <div class="ec-top"><span>🛡️</span><span class="ec-n">Elite</span><span class="ec-v"
+              id="analysis-elite-count">0</span></div>
+          <div class="ec-bar">
+            <div class="ec-fill" id="engine-elite-bar" style="--c:#4f46e5"></div>
+          </div>
+        </div>
+        <div class="eng-card">
+          <div class="ec-top"><span>🍪</span><span class="ec-n">Cookie</span><span class="ec-v"
+              id="analysis-cookie-count">0</span></div>
+          <div class="ec-bar">
+            <div class="ec-fill" id="engine-cookie-bar" style="--c:#d97706"></div>
+          </div>
+        </div>
+        <div class="eng-card">
+          <div class="ec-top"><span>🔗</span><span class="ec-n">Journey</span><span class="ec-v"
+              id="analysis-link-count">0</span></div>
+          <div class="ec-bar">
+            <div class="ec-fill" id="engine-link-bar" style="--c:#2563eb"></div>
+          </div>
+        </div>
+        <div class="eng-card">
+          <div class="ec-top"><span>📖</span><span class="ec-n">Read</span><span class="ec-v"
+              id="analysis-readability-count">0</span></div>
+          <div class="ec-bar">
+            <div class="ec-fill" id="engine-readability-bar" style="--c:#0d9488"></div>
+          </div>
+        </div>
+        <div class="eng-card">
+          <div class="ec-top"><span>🧩</span><span class="ec-n">Behav.</span><span class="ec-v"
+              id="analysis-behavioral-count">0</span></div>
+          <div class="ec-bar">
+            <div class="ec-fill" id="engine-behavioral-bar" style="--c:#db2777"></div>
+          </div>
+        </div>
+        <div class="eng-card">
+          <div class="ec-top"><span>🤖</span><span class="ec-n">ML Model</span><span class="ec-v"
+              id="analysis-ml-count">0</span></div>
+          <div class="ec-bar">
+            <div class="ec-fill" id="engine-ml-bar" style="--c:#10b981"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Compliance -->
+      <div class="res-card">
+        <div class="res-card-hdr">
+          <span class="rch-icon">⚖️</span>
+          <h3>Regulatory Compliance Risk</h3>
+          <span class="rch-badge" id="compliance-count">0 flags</span>
+        </div>
+        <div class="compliance-grid" id="compliance-flags"></div>
+        <div id="regs-violated-row" class="regs-row" style="display:none">
+          <span class="rl">Potential violations:</span>
+          <div class="rt" id="regs-tags"></div>
+        </div>
+      </div>
+
+      <!-- Categories -->
+      <div class="res-card">
+        <div class="res-card-hdr">
+          <span class="rch-icon">📊</span>
+          <h3>Dark Pattern Categories</h3>
+          <span class="rch-badge" id="cat-count">0</span>
+        </div>
+        <div class="category-grid" id="category-list"></div>
+      </div>
+
+      <!-- Recommendations -->
+      <div class="res-card">
+        <div class="res-card-hdr">
+          <span class="rch-icon">💡</span>
+          <h3>Recommendations</h3>
+        </div>
+        <div class="recs-list" id="recommendations-list"></div>
+      </div>
+
+      <!-- Findings -->
+      <div class="res-card">
+        <div class="res-card-hdr">
+          <span class="rch-icon">🔎</span>
+          <h3>Detailed Findings</h3>
+          <span class="rch-badge" id="findings-count">0</span>
+        </div>
+        <div class="filter-bar">
+          <button class="fb active" onclick="filterFindings('all',this)">All</button>
+          <button class="fb" onclick="filterFindings('HIGH',this)"><span class="fb-dot high"></span>High</button>
+          <button class="fb" onclick="filterFindings('MEDIUM',this)"><span class="fb-dot med"></span>Medium</button>
+          <button class="fb" onclick="filterFindings('LOW',this)"><span class="fb-dot low"></span>Low</button>
+        </div>
+        <div class="findings-list" id="findings-list"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===================== HISTORY ===================== -->
+  <section id="history">
+    <div class="container">
+      <div class="pg-hdr">
+        <button class="back-btn" onclick="showView('hero')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2.5">
+            <path d="M19 12H5M5 12l7 7M5 12l7-7" />
+          </svg> Back</button>
+        <div>
+          <h2>Scan History</h2>
+          <p id="history-subtitle">Session scans</p>
+        </div>
+        <button class="icon-btn" onclick="loadHistory()">↻ Refresh</button>
+      </div>
+      <div class="session-stats" id="session-stats" style="display:none">
+        <div class="ss-tile"><strong class="ss-n" id="ss-total">0</strong><span class="ss-l">Total scans</span></div>
+        <div class="ss-tile"><strong class="ss-n" id="ss-avg">—</strong><span class="ss-l">Avg trust score</span></div>
+        <div class="ss-tile ss-warn"><strong class="ss-n" id="ss-high">0</strong><span class="ss-l">High-risk
+            sites</span></div>
+      </div>
+      <div class="history-grid" id="history-grid"></div>
+    </div>
+  </section>
+
+  <!-- ===================== ABOUT ===================== -->
+  <section id="about">
+    <div class="container">
+      <div class="pg-hdr">
+        <button class="back-btn" onclick="showView('hero')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2.5">
+            <path d="M19 12H5M5 12l7 7M5 12l7-7" />
+          </svg> Back</button>
+        <div>
+          <h2>How Vigil Works</h2>
+          <p>The 9-engine analysis pipeline, explained</p>
+        </div>
+      </div>
+
+      <div class="about-grid">
+        <div class="ab-card">
+          <div class="ab-ico">🧬</div>
+          <h4>DOM Analyzer</h4>
+          <p>Parses raw HTML to detect 20 structural dark patterns: pre-checked consent boxes, popup traps, drip
+            pricing, shadow subscriptions, fake countdowns, bait-and-switch, and more.</p>
+        </div>
+        <div class="ab-card">
+          <div class="ab-ico">🧠</div>
+          <h4>NLP Engine</h4>
+          <p>14 text categories, 200+ regex patterns. Catches confirmshaming, FUD marketing, trick questions, basket
+            sneaking, COPPA risk, and fine print abuse.</p>
+        </div>
+        <div class="ab-card">
+          <div class="ab-ico">🎨</div>
+          <h4>Visual Analyzer</h4>
+          <p>CSS color psychology, button misdirection via styling, urgency color abuse, contrast manipulation against
+            WCAG 2.1 AA.</p>
+        </div>
+        <div class="ab-card">
+          <div class="ab-ico">🛡️</div>
+          <h4>Elite Privacy</h4>
+          <p>15 categories: tracking pixels, session replay tools (Hotjar, FullStory, Clarity), browser fingerprinting,
+            data broker integrations, geo-discrimination.</p>
+        </div>
+        <div class="ab-card">
+          <div class="ab-ico">🍪</div>
+          <h4>Consent Auditor</h4>
+          <p>10 GDPR consent checks: accept-only banners, deceptive button hierarchy, cookie walls, consent bundling,
+            pre-ticked boxes, third-party pre-activation.</p>
+        </div>
+        <div class="ab-card">
+          <div class="ab-ico">🔗</div>
+          <h4>Link &amp; Journey</h4>
+          <p>Click-path analysis: cancel vs sign-up asymmetry, anchor mismatches, legal link burial, dark download
+            funnels, unsubscribe obstruction.</p>
+        </div>
+        <div class="ab-card">
+          <div class="ab-ico">📖</div>
+          <h4>Readability Engine</h4>
+          <p>Actual Flesch-Kincaid grade calculation, jargon density scoring (per 1000 words), contradictory statement
+            detection, and forced arbitration discovery.</p>
+        </div>
+        <div class="ab-card ab-card-featured">
+          <div class="ab-ico">🧩</div>
+          <h4>Behavioural AI <span class="ab-excl">Exclusive</span></h4>
+          <p>6 compound dark funnels, Cialdini 6-principle mapping, industry risk multipliers
+            (gambling/children/crypto), regulatory enforcement probability score (0–100).</p>
+        </div>
+        <div class="ab-card">
+          <div class="ab-ico">⚖️</div>
+          <h4>Legal Framework Engine</h4>
+          <p>Every finding cites a specific regulation: GDPR Art. 7, FTC ROSCA Act, COPPA, CCPA, WCAG 2.1, EU DSA,
+            ePrivacy Directive, CAN-SPAM, ASA CAP Code.</p>
+        </div>
+      </div>
+
+      <div class="law-section">
+        <h3 class="ls-title">Referenced Legal Frameworks</h3>
+        <div class="law-tags">
+          <span class="law-tag">GDPR (EU)</span><span class="law-tag">CCPA (US)</span>
+          <span class="law-tag">FTC Act §5</span><span class="law-tag">FTC ROSCA</span>
+          <span class="law-tag">COPPA</span><span class="law-tag">ePrivacy Directive</span>
+          <span class="law-tag">EU UCPD</span><span class="law-tag">EU DSA 2022</span>
+          <span class="law-tag">WCAG 2.1 AA</span><span class="law-tag">CAN-SPAM</span>
+          <span class="law-tag">ADA Title III</span><span class="law-tag">DPDP Act 2023</span>
+          <span class="law-tag">ICO Guidance</span><span class="law-tag">ASA CAP Code</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <div class="nav-brand">
+          <div class="brand-mark sm">
+            <svg width="16" height="16" viewBox="0 0 32 32" fill="none">
+              <path d="M16 3L5 9V17.5C5 23.3 9.8 28.6 16 30C22.2 28.6 27 23.3 27 17.5V9L16 3Z" fill="url(#vg2)" />
+              <ellipse cx="16" cy="17" rx="5" ry="3.5" stroke="white" stroke-width="1.8" fill="none" />
+              <circle cx="16" cy="17" r="1.8" fill="white" />
+              <defs>
+                <linearGradient id="vg2" x1="5" y1="3" x2="27" y2="30" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#6366f1" />
+                  <stop offset="1" stop-color="#4f46e5" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <span class="brand-text">vigil<span class="brand-dot">.</span></span>
+        </div>
+        <p>AI-powered dark pattern intelligence. Built for transparency.</p>
+      </div>
+      <nav class="footer-nav">
+        <a href="#" data-nav="history">History</a>
+        <a href="#" data-nav="about">About</a>
+      </nav>
+    </div>
+    <div class="footer-bottom container">
+      <span>© 2026 Vigil AI — Always watching. Always honest.</span>
+      <span class="ft-stack">Python · Flask · Scikit-Learn · Vanilla JS</span>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+  <script src="/static/js/app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,82 @@
+# ═══════════════════════════════════════════════════════════════════
+# Vigil AI — Production .gitignore
+# CRITICAL: Prevents sensitive artifacts from entering git history
+# ═══════════════════════════════════════════════════════════════════
+
+# ── Python ────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+dist/
+build/
+*.whl
+
+# ── Virtual environments ─────────────────────────────────────────
+venv/
+.venv/
+env/
+
+# ── IDE ───────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ── Database files (CRITICAL: contain user scan data) ─────────────
+*.db
+*.db-shm
+*.db-wal
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# ── Logs (CRITICAL: contain IPs, URLs, scan results) ─────────────
+*.log
+logs/
+
+# ── ML model artifacts (CRITICAL: too large + RCE via pickle) ────
+# Models MUST be trained locally and verified before deployment
+*.pkl
+*.joblib
+*.h5
+*.pt
+*.onnx
+*.pb
+backend/app/models/
+!backend/app/models/.gitkeep
+
+# ── Model integrity manifests (these ARE committed) ──────────────
+!backend/app/models/model_manifest.json
+
+# ── Screenshots (generated at runtime) ───────────────────────────
+backend/static/screenshots/
+
+# ── Test artifacts ────────────────────────────────────────────────
+backend/test_results.json
+backend/import_test.txt
+.pytest_cache/
+htmlcov/
+.coverage
+
+# ── OS artifacts ──────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Environment secrets ──────────────────────────────────────────
+.env
+.env.local
+.env.production
+.env.*.local
+
+# ── Test output artifacts ─────────────────────────────────────────
+tests/*_output*.txt
+tests/*_result*.txt
+tests/*_results*.json
+tests/live_*.txt
+tests/smoke_*.txt
+test_results.json
+
